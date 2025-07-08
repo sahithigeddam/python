@@ -264,9 +264,153 @@ to string while presering the order of the first occurings and return the modifi
 # s = "".join(dict.fromkeys(s))
 # print(s)
 '''or'''
-s=input()
-v=""
-for i in s:
-  if i not in  v:
-    v += i
-    print(v)
+# s=input()
+# v=""
+# for i in s:
+#   if i not in  v:
+#     v += i
+#     print(v)
+
+
+'''addition of sum of 5 numbers using difrient oparators'''
+# a=int(input("enter a number:"))
+# b=int(input("ente a number:"))
+# c=int(input("enter a number:"))
+# d=int(input("enter a number:"))
+# e=int(input("enter a number:"))
+# print("add",a+b)
+# print("sub",b-c)
+# print("mul",c*d)
+# print("div",d/e)
+
+'''given n integer if n is odd "print weired
+if n is even and in the range of 6 to 10 "print weired"
+if n is even and in the range of 2 to 5 "print not weard"
+if n is even and greater than 20 "print not weard'''
+# n=int(input())
+# if(n%2!=0):
+#   print("weird")
+# elif(6<=n<=20):
+#   print("weird")   
+# else:
+#   print("not weird")  
+'''or'''
+# n=int(input())
+# if(n%2!=0)or(n%2==0 and 6<=n<=20):
+#   print("weird")
+# else:
+#   print("not weird")  
+
+'''given a,b are  two integers 
+output: sum of a,b
+        difference of a,b
+        product of a,b'''
+
+# a= int(input())
+# b=int(input())
+# print(a+b)
+# print(a-b)
+# print(a*b)  
+      
+
+
+'''valid palindrom(125)'''
+# s=input()
+# r=""
+# v=s.lower()
+# for i in v:
+#     if i.isalnum():
+#        r+=i
+# l=r[::-1]
+# if r==l:
+#    print("true")
+# else:
+#    print("false")    
+'''single number(136)'''
+# nums=list(map(int,input().split()))
+# for i in nums:
+#   if nums.count(i)==1:
+#     print(i)
+#     break
+'''two sum(1)'''
+# nums=list(map(int,input().split()))
+# target=int(input())
+# for i in range(len(nums)):
+#     for j in range(i+1,len(nums)):
+#         if nums[i]+nums[j]==target:
+#            print([i,j])
+#            break
+
+'''third maximum number(414)'''
+
+# nums=list(map(int,input().split()))
+# if(len(nums)>=3):
+#    l=list(set(nums))
+#    l.sort()
+#    print(l[-3])
+# else:
+#   print(max(nums))   
+
+# for i in nums:
+#   if i not in l:
+#     l.append(i)
+#     print(l)
+
+'''jewels and stones(771)'''
+# j=input()  
+# s=input()
+# count =0
+# for i in s:
+#   if i in j:
+#     count += 1
+# print(count)
+'''add string(415)'''
+# num1=input()
+# num2=input()
+# s=int(num1)  + int(num2)
+# r=str(s)
+# print('"',r,'"')
+'''sqrt (69)'''
+# import math
+# x=int(input())
+# v=math.floor(math.sqrt(x))
+# print(v)
+'''divide two integers()'''
+# import math
+# x=int(input())
+# y=int(input())
+# print(int(x / y))
+# a=input()
+# b=input()
+# print(a+b)
+'''fizz buzz (412)'''
+# n=int(input())
+# list=[]
+# for i in range(1,n+1):
+#     if i%3==0 and i%5==0:
+#         list.append("fizzbuzz")
+#     elif i%3==0:
+#         list.append("fizz")
+#     elif i%5==0:
+#         list.append("buzz")
+#     else:
+#         list.append(str(i)) 
+# print(list)                   
+
+'''palindrome number(9)'''
+# x=int(input())
+# v=str(x)
+# if v in v[::-1]:
+#     print("true")
+# else:
+#     print("flase")   
+'''plus one'''
+a=int(input("enter the nymber:"))
+n=a+1
+print([n])
+# digits = [1, 2, 3]
+
+# num = int(''.join(map(str, digits))) + 1
+# result = list(map(int, str(num)))
+
+# print(result)
