@@ -1,0 +1,81 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+from sklearn.model_selection import train_test_split, StratifiedKFold, GridSearchCV
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.impute import SimpleImputer
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, roc_auc_score, confusion_matrix
+import shap
+df = pd.read_csv("diabetes.csv")   # replace with UCI/Kaggle dataset
+
+print(df.head())
+print(df.info())
+X = df.drop(columns=['Outcome'])
+y = df['Outcome']
+
+# Identify numeric and categorical columns
+num_cols = X.select_dtypes(include=np.number).columns
+cat_cols = X.select_dtypes(exclude=np.number).columns
+
+# Pipelines
+numeric_pipe = Pipeline([
+    ('imputer', SimpleImputer(strategy='median')),
+    ('scaler', StandardScaler())
+])
+
+categorical_pipe = Pipeline([
+    ('imputer', SimpleImputer(strategy='most_frequent')),
+    ('encoder', OneHotEncoder(handle_unknown='ignore'))
+])
+
+preprocess = ColumnTransformer([
+    ('num', numeric_pipe, num_cols),
+    ('cat', categorical_pipe, cat_cols)
+])
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, stratify=y, random_state=42
+)
+
+# Logistic Regression pipeline
+logreg = Pipeline([
+    ('prep', preprocess),
+    ('model', LogisticRegression(max_iter=500, class_weight='balanced'))
+])
+
+logreg.fit(X_train, y_train)
+
+# Random Forest pipeline
+rf = Pipeline([
+    ('prep', preprocess),
+    ('model', RandomForestClassifier(n_estimators=100, class_weight='balanced'))
+])
+
+rf.fit(X_train, y_train)
+y_pred_log = logreg.predict(X_test)
+y_proba_log = logreg.predict_proba(X_test)[:,1]
+
+print("Logistic Regression ROC-AUC:", roc_auc_score(y_test, y_proba_log))
+print(classification_report(y_test, y_pred_log))
+
+# Random Forest
+y_pred_rf = rf.predict(X_test)
+y_proba_rf = rf.predict_proba(X_test)[:,1]
+
+print("Random Forest ROC-AUC:", roc_auc_score(y_test, y_proba_rf))
+print(classification_report(y_test, y_pred_rf))
+importances = rf.named_steps['model'].feature_importances_
+feature_names = rf.named_steps['prep'].get_feature_names_out()
+
+feat_imp = pd.Series(importances, index=feature_names).sort_values(ascending=False)
+print(feat_imp.head(10))
+
+# SHAP for interpretability
+explainer = shap.TreeExplainer(rf.named_steps['model'])
+shap_values = explainer.shap_values(rf.named_steps['prep'].transform(X_test))
+shap.summary_plot(shap_values[1], rf.named_steps['prep'].transform(X_test), feature_names=feature_names)
